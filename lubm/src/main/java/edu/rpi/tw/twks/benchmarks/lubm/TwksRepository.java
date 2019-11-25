@@ -2,10 +2,10 @@ package edu.rpi.tw.twks.benchmarks.lubm;
 
 import com.google.common.collect.ImmutableList;
 import edu.lehigh.swat.bench.ubt.api.QueryResult;
-import edu.rpi.tw.twks.abc.MemTwks;
-import edu.rpi.tw.twks.abc.MemTwksConfiguration;
 import edu.rpi.tw.twks.api.Twks;
 import edu.rpi.tw.twks.api.TwksTransaction;
+import edu.rpi.tw.twks.factory.TwksFactory;
+import edu.rpi.tw.twks.factory.TwksFactoryConfiguration;
 import edu.rpi.tw.twks.nanopub.MalformedNanopublicationException;
 import edu.rpi.tw.twks.nanopub.Nanopublication;
 import edu.rpi.tw.twks.nanopub.NanopublicationParser;
@@ -49,7 +49,7 @@ public final class TwksRepository
   @Override
   public final void open(final String database) {
       checkState(twks == null);
-      twks = new MemTwks(MemTwksConfiguration.builder().build());
+      twks = TwksFactory.getInstance().createTwks(TwksFactoryConfiguration.builder().setFromSystemProperties().build());
   }
 
   @Override
