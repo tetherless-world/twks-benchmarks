@@ -1,8 +1,8 @@
 # Queries copied from http://swat.cse.lehigh.edu/projects/lubm/queries-sparql.txt
 
-# Correct answers for a single University
+# Correct answers for a single University, from the LUBM paper
 # 1: 4
-# 2: 0
+# 2: 0?
 # 3: 6
 # 4: 34?
 # 5: 719
@@ -15,6 +15,22 @@
 # 12: 540?
 # 13: 1
 # 14: 5916
+# Correct answers for 50 Universities, from https://franz.com/agraph/allegrograph3.3/agraph3.3_bench_lubm.lhtml
+# 1: 4
+# 2: 130
+# 3: 6
+# 4: 34
+# 5: 719
+# 6: 519842
+# 7: 67
+# 8: 7790
+# 9: 13639
+# 10: 4
+# 11: 224
+# 12: 15
+# 13: 228
+# 14: 383730
+
 
 # Query1
 # This query bears large input and high selectivity. It queries about just one class and
