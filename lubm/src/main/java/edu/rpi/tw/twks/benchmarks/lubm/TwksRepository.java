@@ -8,10 +8,16 @@ import edu.rpi.tw.twks.factory.TwksFactory;
 import edu.rpi.tw.twks.factory.TwksFactoryConfiguration;
 import edu.rpi.tw.twks.nanopub.MalformedNanopublicationException;
 import edu.rpi.tw.twks.nanopub.Nanopublication;
+import edu.rpi.tw.twks.nanopub.NanopublicationBuilder;
 import edu.rpi.tw.twks.nanopub.NanopublicationParser;
 import edu.rpi.tw.twks.uri.Uri;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import org.apache.jena.query.*;
+import org.apache.jena.rdf.model.InfModel;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.reasoner.Reasoner;
+import org.apache.jena.reasoner.ReasonerRegistry;
 import org.apache.jena.riot.Lang;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,11 +70,16 @@ public final class TwksRepository
   public final boolean load(final String dataPath) {
       checkOpen();
 
+      final Model assertionsModel = ModelFactory.createDefaultModel();
+
       final ImmutableList.Builder<Nanopublication> nanopublicationsBuilder = ImmutableList.builder();
 
       // Load ontology
+      final Nanopublication ontologyNanopublication;
       try {
-          nanopublicationsBuilder.add(NanopublicationParser.builder().setLang(Lang.RDFXML).setSource(Uri.parse(ontology)).build().parseOne());
+          ontologyNanopublication = NanopublicationParser.builder().setLang(Lang.RDFXML).setSource(Uri.parse(ontology)).build().parseOne();
+          assertionsModel.add(ontologyNanopublication.getAssertion().getModel());
+          nanopublicationsBuilder.add(ontologyNanopublication);
       } catch (final MalformedNanopublicationException e) {
           logger.error("error loading ontology {}", ontology, e);
           return false;
@@ -87,12 +98,31 @@ public final class TwksRepository
               continue;
           }
           try {
-              nanopublicationsBuilder.add(NanopublicationParser.builder().setLang(Lang.RDFXML).setSource(dataFilePath).build().parseOne());
+              final Nanopublication nanopublication = NanopublicationParser.builder().setLang(Lang.RDFXML).setSource(dataFilePath).build().parseOne();
+              assertionsModel.add(nanopublication.getAssertion().getModel());
+              nanopublicationsBuilder.add(nanopublication);
               logger.debug("loaded data file {}", dataFilePath);
           } catch (final MalformedNanopublicationException e) {
               logger.error("error loading data file {}", dataFilePath, e);
               return false;
           }
+      }
+
+      {
+          final Reasoner reasoner = ReasonerRegistry.getOWLReasoner();
+          reasoner.bindSchema(ontologyNanopublication.getAssertion().getModel());
+          final InfModel assertionsInfModel = ModelFactory.createInfModel(reasoner, assertionsModel);
+
+          final NanopublicationBuilder inferredNanopublicationBuilder = Nanopublication.builder();
+          inferredNanopublicationBuilder.getAssertionBuilder().getModel().add(assertionsInfModel.getDeductionsModel());
+          final Nanopublication inferredNanopublication;
+          try {
+              inferredNanopublication = inferredNanopublicationBuilder.build();
+          } catch (final MalformedNanopublicationException e) {
+              throw new IllegalStateException(e);
+          }
+
+          nanopublicationsBuilder.add(inferredNanopublication);
       }
 
       final ImmutableList<Nanopublication> nanopublications = nanopublicationsBuilder.build();
