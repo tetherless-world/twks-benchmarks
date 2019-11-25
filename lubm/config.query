@@ -10,7 +10,7 @@ SELECT ?X
 WHERE
 {?X rdf:type ub:GraduateStudent .
   ?X ub:takesCourse
-http://www.Department0.University0.edu/GraduateCourse0}
+<http://www.Department0.University0.edu/GraduateCourse0>}
 
 # Query2
 # This query increases in complexity: 3 classes and 3 properties are involved. Additionally,
@@ -36,7 +36,7 @@ SELECT ?X
 WHERE
 {?X rdf:type ub:Publication .
   ?X ub:publicationAuthor
-        http://www.Department0.University0.edu/AssistantProfessor0}
+        <http://www.Department0.University0.edu/AssistantProfessor0>}
 
 # Query4
 # This query has small input and high selectivity. It assumes subClassOf relationship
