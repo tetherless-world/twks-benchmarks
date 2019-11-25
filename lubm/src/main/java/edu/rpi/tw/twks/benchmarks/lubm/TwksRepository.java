@@ -14,6 +14,7 @@ import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.ReadWrite;
+import org.apache.jena.riot.Lang;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,7 +70,7 @@ public final class TwksRepository
 
       // Load ontology
       try {
-          nanopublicationsBuilder.add(NanopublicationParser.builder().setSource(Uri.parse(ontology)).build().parseOne());
+          nanopublicationsBuilder.add(NanopublicationParser.builder().setLang(Lang.RDFXML).setSource(Uri.parse(ontology)).build().parseOne());
       } catch (final MalformedNanopublicationException e) {
           logger.error("error loading ontology {}", ontology, e);
           return false;
@@ -88,13 +89,16 @@ public final class TwksRepository
               continue;
           }
           try {
-              nanopublicationsBuilder.add(NanopublicationParser.builder().setSource(dataFilePath).build().parseOne());
-              logger.info("loaded data file {}", dataFilePath);
+              nanopublicationsBuilder.add(NanopublicationParser.builder().setLang(Lang.RDFXML).setSource(dataFilePath).build().parseOne());
+              logger.debug("loaded data file {}", dataFilePath);
           } catch (final MalformedNanopublicationException e) {
               logger.error("error loading data file {}", dataFilePath, e);
               return false;
           }
       }
+
+      final ImmutableList<Nanopublication> nanopublications = nanopublicationsBuilder.build();
+      twks.postNanopublications(nanopublications);
 
       return true;
   }

@@ -6,3 +6,5 @@
 
 ## Running
 
+1. Benchmark loading: run `benchmark-load.sh` in the current directory
+1. Benchmark querying: run `benchmark-query.sh` in the current directory
