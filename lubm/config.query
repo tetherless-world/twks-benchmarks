@@ -1,5 +1,21 @@
 # Queries copied from http://swat.cse.lehigh.edu/projects/lubm/queries-sparql.txt
 
+# Correct answers for a single University
+# 1: 4
+# 2: 0
+# 3: 6
+# 4: 34?
+# 5: 719
+# 6: 7790? 8330?
+# 7: 67
+# 8: 7790? 8330?
+# 9: 208
+# 10: 4
+# 11: 224
+# 12: 540?
+# 13: 1
+# 14: 5916
+
 # Query1
 # This query bears large input and high selectivity. It queries about just one class and
 # one property and does not assume any hierarchy information or inference.
