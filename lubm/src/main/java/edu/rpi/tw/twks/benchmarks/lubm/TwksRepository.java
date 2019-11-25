@@ -1,6 +1,7 @@
 package edu.rpi.tw.twks.benchmarks.lubm;
 
 import com.google.common.collect.ImmutableList;
+import edu.lehigh.swat.bench.ubt.api.QueryResult;
 import edu.rpi.tw.twks.abc.MemTwks;
 import edu.rpi.tw.twks.abc.MemTwksConfiguration;
 import edu.rpi.tw.twks.api.Twks;
@@ -10,10 +11,7 @@ import edu.rpi.tw.twks.nanopub.Nanopublication;
 import edu.rpi.tw.twks.nanopub.NanopublicationParser;
 import edu.rpi.tw.twks.uri.Uri;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import org.apache.jena.query.Query;
-import org.apache.jena.query.QueryExecution;
-import org.apache.jena.query.QueryFactory;
-import org.apache.jena.query.ReadWrite;
+import org.apache.jena.query.*;
 import org.apache.jena.riot.Lang;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,10 +106,31 @@ public final class TwksRepository
       checkOpen();
 
       final Query parsedQuery = QueryFactory.create(query.getString());
+
+      final long solutionCountFinal;
       try (final TwksTransaction twksTransaction = twks.beginTransaction(ReadWrite.READ)) {
           try (final QueryExecution queryExecution = twksTransaction.queryAssertions(parsedQuery)) {
-              throw new UnsupportedOperationException();
+              final ResultSet resultSet = queryExecution.execSelect();
+              long solutionCount = 0;
+              while (resultSet.hasNext()) {
+                  resultSet.next();
+                  solutionCount++;
+              }
+              solutionCountFinal = solutionCount;
           }
       }
+      return new QueryResult() {
+          @Override
+          public long getNum() {
+              return solutionCountFinal;
+          }
+
+          @Override
+          public boolean next() {
+              return --remainingSolutionCount >= 0;
+          }
+
+          private long remainingSolutionCount = solutionCountFinal;
+      };
   }
 }
