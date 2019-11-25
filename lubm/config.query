@@ -5,7 +5,7 @@
 # one property and does not assume any hierarchy information or inference.
 [query1]
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+PREFIX ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
 SELECT ?X
 WHERE
 {?X rdf:type ub:GraduateStudent .
@@ -17,7 +17,7 @@ WHERE
 # there is a triangular pattern of relationships between the objects involved.
 [query2]
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+PREFIX ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
 SELECT ?X ?Y ?Z
 WHERE
 {?X rdf:type ub:GraduateStudent .
@@ -31,7 +31,7 @@ WHERE
 # This query is similar to Query 1 but class Publication has a wide hierarchy.
 [query3]
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+PREFIX ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
 SELECT ?X
 WHERE
 {?X rdf:type ub:Publication .
@@ -44,7 +44,7 @@ WHERE
 # feature is that it queries about multiple properties of a single class.
 [query4]
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+PREFIX ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
 SELECT ?X ?Y1 ?Y2 ?Y3
 WHERE
 {?X rdf:type ub:Professor .
@@ -59,7 +59,7 @@ WHERE
 # Moreover, class Person features a deep and wide hierarchy.
 [query5]
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+PREFIX ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
 SELECT ?X
 WHERE
 {?X rdf:type ub:Person .
@@ -73,7 +73,7 @@ WHERE
 # input and low selectivity.
 [query6]
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+PREFIX ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
 SELECT ?X WHERE {?X rdf:type ub:Student}
 
 
@@ -82,7 +82,7 @@ SELECT ?X WHERE {?X rdf:type ub:Student}
 # number of classes and properties and its selectivity is high.
 [query7]
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+PREFIX ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
 SELECT ?X ?Y
 WHERE
 {?X rdf:type ub:Student .
@@ -96,7 +96,7 @@ WHERE
 # This query is further more complex than Query 7 by including one more property.
 [query8]
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+PREFIX ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
 SELECT ?X ?Y ?Z
 WHERE
 {?X rdf:type ub:Student .
@@ -112,7 +112,7 @@ WHERE
 # properties in the query set and there is a triangular pattern of relationships.
 [query9]
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+PREFIX ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
 SELECT ?X ?Y ?Z
 WHERE
 {?X rdf:type ub:Student .
@@ -130,7 +130,7 @@ WHERE
 # to the results.
 [query10]
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+PREFIX ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
 SELECT ?X
 WHERE
 {?X rdf:type ub:Student .
@@ -148,7 +148,7 @@ WHERE
 # Additionally, its input is small.
 [query11]
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+PREFIX ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
 SELECT ?X
 WHERE
 {?X rdf:type ub:ResearchGroup .
@@ -163,7 +163,7 @@ WHERE
 # department. Input of this query is small as well.
 [query12]
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+PREFIX ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
 SELECT ?X ?Y
 WHERE
 {?X rdf:type ub:Chair .
@@ -181,7 +181,7 @@ WHERE
 # degreeFrom and its subproperties, and also requires inference about inverseOf.
 [query13]
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+PREFIX ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
 SELECT ?X
 WHERE
 {?X rdf:type ub:Person .
@@ -192,7 +192,7 @@ WHERE
 # This query is the simplest in the test set. This query represents those with large input and low selectivity and does not assume any hierarchy information or inference.
 [query14]
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+PREFIX ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
 SELECT ?X
 WHERE {?X rdf:type ub:UndergraduateStudent}
 
