@@ -57,7 +57,7 @@
     <dependencies>
         <dependency>
             <groupId>edu.rpi.tw.twks</groupId>
-            <artifactId>twks-client</artifactId>
+            <artifactId>twks-abc</artifactId>
             <version>1.0.3-SNAPSHOT</version>
         </dependency>
     </dependencies>

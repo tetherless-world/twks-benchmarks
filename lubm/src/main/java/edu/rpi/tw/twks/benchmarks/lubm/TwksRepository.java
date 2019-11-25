@@ -1,163 +1,113 @@
 package edu.rpi.tw.twks.benchmarks.lubm;
 
+import com.google.common.collect.ImmutableList;
+import edu.rpi.tw.twks.abc.MemTwks;
+import edu.rpi.tw.twks.abc.MemTwksConfiguration;
+import edu.rpi.tw.twks.api.Twks;
+import edu.rpi.tw.twks.api.TwksTransaction;
+import edu.rpi.tw.twks.nanopub.MalformedNanopublicationException;
+import edu.rpi.tw.twks.nanopub.Nanopublication;
+import edu.rpi.tw.twks.nanopub.NanopublicationParser;
+import edu.rpi.tw.twks.uri.Uri;
+import edu.umd.cs.findbugs.annotations.Nullable;
+import org.apache.jena.query.Query;
+import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QueryFactory;
+import org.apache.jena.query.ReadWrite;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+
+import static com.google.common.base.Preconditions.checkState;
+
 public final class TwksRepository
     implements edu.lehigh.swat.bench.ubt.api.Repository {
+    private final static Logger logger = LoggerFactory.getLogger(TwksRepository.class);
+    private @Nullable
+    Twks twks;
   //  private RdfSchemaRepository repository_ = null;
 //  private QueryResultListener qResultListener_ = new QueryResultListener();
-  private String ontology_ = null;
-
-  public TwksRepository() {
-//    System.setProperty("org.xml.sax.driver",
-//                       "org.apache.xerces.parsers.SAXParser");
-  }
+  private String ontology = null;
 
   @Override
   public void setOntology(final String ontology) {
-    ontology_ = ontology;
+      this.ontology = ontology;
   }
 
-  @Override
+    private void checkOpen() {
+        if (twks == null) {
+            throw new IllegalStateException("repository is not open");
+        }
+    }
+
+    @Override
   public void clear() {
-//    if (repository_ == null) {
-//      System.err.println("Repository is not open!");
-//      return;
-//    }
-//
-//    try {
-//      repository_.clearRepository();
-//    }
-//    catch (SailUpdateException ex) {
-//      ex.printStackTrace();
-//      System.exit( -1);
-//    }
+        checkOpen();
+        twks.deleteNanopublications();
   }
 
   @Override
-  public void open(final String database) {
-//    repository_ = new RdfSchemaRepository();
-//
-//    //initialize the repository
-//    Hashtable params = new Hashtable();
-//    params.put("jdbcDriver", "com.mysql.jdbc.Driver");
-//    params.put("jdbcUrl", database);
-//    params.put("user", "sesame");
-//    params.put("password", "");
-//    try {
-//      repository_.initialize(params);
-//    }
-//    catch (SailInitializationException e) {
-//      e.printStackTrace();
-//      System.exit(-1);
-//    }
+  public final void open(final String database) {
+      checkState(twks == null);
+      twks = new MemTwks(MemTwksConfiguration.builder().build());
   }
 
   @Override
-  public void close() {
-//    if (repository_ == null) return;
-//    repository_.shutDown();
+  public final void close() {
+      if (twks == null) {
+          return;
+      }
+      twks = null;
   }
 
   @Override
-  public boolean load(final String dataPath) {
-//    if (repository_ == null) {
-//      System.err.println("Repository is not open!");
-//      return false;
-//    }
-//
-//    try {
-//      SesameUpload upload_ = new SesameUpload(repository_);
-//
-//      //load ontology first
-//      InputStream iStream = new URL(ontology_).openConnection().getInputStream();
-//      System.out.println("Start loading ontology");
-//      upload_.addRdfModel(iStream, ontology_,
-//                          new DummyAdminListener(), RDFFormat.RDFXML, false);
-//      System.out.println("End loading ontology");
-//
-//      File dir = new File(dataPath);
-//      String[] list = dir.list();
-//      if (list == null) {
-//        System.err.println("Invalid data directory: " + dataPath);
-//        return false;
-//      }
-//      for (int i = 0; i < list.length; i++) {
-//        String file = dataPath + "/" + list[i];
-//        iStream = new FileInputStream(file);
-//        System.out.println("[" + (i + 1) + "]Start loading " + file);
-//        upload_.addRdfModel(iStream, file /*base url*/, new DummyAdminListener(),
-//                            RDFFormat.RDFXML, false);
-//        System.out.println("End loading " + file);
-//      }
-//    }
-//    catch (java.io.FileNotFoundException e) {
-//      e.printStackTrace();
-//      System.exit( -1);
-//    }
-//    catch (java.io.IOException e) {
-//      e.printStackTrace();
-//      System.exit( -1);
-//    }
-//    catch (UpdateException e) {
-//      e.printStackTrace();
-//      System.exit( -1);
-//    }
-//
-//    return true;
-    return true;
+  public final boolean load(final String dataPath) {
+      checkOpen();
+
+      final ImmutableList.Builder<Nanopublication> nanopublicationsBuilder = ImmutableList.builder();
+
+      // Load ontology
+      try {
+          nanopublicationsBuilder.add(NanopublicationParser.builder().setSource(Uri.parse(ontology)).build().parseOne());
+      } catch (final MalformedNanopublicationException e) {
+          logger.error("error loading ontology {}", ontology, e);
+          return false;
+      }
+
+      final File dataDirectoryPath = new File(dataPath);
+      final File[] dataFilePaths = dataDirectoryPath.listFiles();
+      if (dataFilePaths == null) {
+          logger.error("unable to list data directory {}", dataPath);
+          return false;
+      }
+
+      for (final File dataFilePath : dataFilePaths) {
+          if (!dataFilePath.getName().endsWith(".owl")) {
+              logger.debug("ignoring non-data file {}", dataFilePath);
+              continue;
+          }
+          try {
+              nanopublicationsBuilder.add(NanopublicationParser.builder().setSource(dataFilePath).build().parseOne());
+              logger.info("loaded data file {}", dataFilePath);
+          } catch (final MalformedNanopublicationException e) {
+              logger.error("error loading data file {}", dataFilePath, e);
+              return false;
+          }
+      }
+
+      return true;
   }
 
   @Override
-  public edu.lehigh.swat.bench.ubt.api.QueryResult issueQuery(final edu.lehigh.swat.bench.ubt.api.Query query) {
-//    if (repository_ == null) {
-//      System.err.println("Repository is not open!");
-//      return null;
-//    }
-//
-//    if (query == null) return null;
-//    String q = query.getString();
-//    if (q.length() <= 0) return null;
-//
-//    //use RQL engine
-//    return issueRql(q);
-//    //use SeRQL engine
-//    //return issueSerql(q);
-    return null;
-  }
+  public final edu.lehigh.swat.bench.ubt.api.QueryResult issueQuery(final edu.lehigh.swat.bench.ubt.api.Query query) {
+      checkOpen();
 
-//  private edu.lehigh.swat.bench.ubt.api.QueryResult issueRql(String q) {
-//    RqlEngine qEngine = new RqlEngine(repository_);
-//    try {
-//      Query rqlQuery = qEngine.parseQuery(q);
-//      RqlOptimizer.optimize(rqlQuery);
-//      qEngine.evaluateQuery(rqlQuery, qResultListener_);
-//    }
-//    catch (java.io.IOException e) {
-//      e.printStackTrace();
-//      return null;
-//    }
-//    catch (MalformedQueryException e) {
-//      e.printStackTrace();
-//      return null;
-//    }
-//
-//    return qResultListener_;
-//  }
-//
-//  private edu.lehigh.swat.bench.ubt.api.QueryResult issueSerql(String q) {
-//    SerqlEngine qEngine = new SerqlEngine(repository_);
-//    try {
-//      SfwQuery sfwQuery = (SfwQuery)qEngine.parseQuery(q);
-//      qEngine.evaluateSelectQuery(sfwQuery, qResultListener_);
-//    }
-//    catch (java.io.IOException e) {
-//      e.printStackTrace();
-//      return null;
-//    }
-//    catch (MalformedQueryException e) {
-//      e.printStackTrace();
-//      return null;
-//    }
-//
-//    return qResultListener_;
-//  }
+      final Query parsedQuery = QueryFactory.create(query.getString());
+      try (final TwksTransaction twksTransaction = twks.beginTransaction(ReadWrite.READ)) {
+          try (final QueryExecution queryExecution = twksTransaction.queryAssertions(parsedQuery)) {
+              throw new UnsupportedOperationException();
+          }
+      }
+  }
 }
