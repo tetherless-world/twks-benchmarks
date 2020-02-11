@@ -1,0 +1,120 @@
+Scale factor:           100
+Number of warmup runs:  50
+Seed:                   808080
+Number of query mix runs (without warmups): 500 times
+min/max Querymix runtime: 3.1114s / 7.0236s
+Total runtime:          2280.007 seconds
+QMpH:                   789.47 query mixes per hour
+CQET:                   4.56001 seconds average runtime of query mix
+CQET (geom.):           4.52417 seconds geometric mean runtime of query mix
+
+Metrics for Query:      1
+Count:                  500 times executed in whole run
+AQET:                   0.064147 seconds (arithmetic mean)
+AQET(geom.):            0.063398 seconds (geometric mean)
+QPS:                    15.59 Queries per second
+minQET/maxQET:          0.05314849s / 0.36216773s
+Average result count:   0.31
+min/max result count:   0 / 4
+Number of timeouts:     0
+
+Metrics for Query:      2
+Count:                  3000 times executed in whole run
+AQET:                   0.075838 seconds (arithmetic mean)
+AQET(geom.):            0.075109 seconds (geometric mean)
+QPS:                    13.19 Queries per second
+minQET/maxQET:          0.05906519s / 0.53262760s
+Average result count:   23.51
+min/max result count:   11 / 41
+Number of timeouts:     0
+
+Metrics for Query:      3
+Count:                  500 times executed in whole run
+AQET:                   0.061649 seconds (arithmetic mean)
+AQET(geom.):            0.061334 seconds (geometric mean)
+QPS:                    16.22 Queries per second
+minQET/maxQET:          0.05265164s / 0.11622160s
+Average result count:   0.21
+min/max result count:   0 / 3
+Number of timeouts:     0
+
+Metrics for Query:      4
+Count:                  500 times executed in whole run
+AQET:                   0.062959 seconds (arithmetic mean)
+AQET(geom.):            0.062058 seconds (geometric mean)
+QPS:                    15.88 Queries per second
+minQET/maxQET:          0.05374991s / 0.39347363s
+Average result count:   0.00
+min/max result count:   0 / 0
+Number of timeouts:     0
+
+Metrics for Query:      5
+Count:                  1000 times executed in whole run
+AQET:                   1.515215 seconds (arithmetic mean)
+AQET(geom.):            1.466863 seconds (geometric mean)
+QPS:                    0.66 Queries per second
+minQET/maxQET:          0.69976735s / 3.29493762s
+Average result count:   0.88
+min/max result count:   0 / 4
+Number of timeouts:     0
+
+Metrics for Query:      7
+Count:                  2000 times executed in whole run
+AQET:                   0.065887 seconds (arithmetic mean)
+AQET(geom.):            0.065380 seconds (geometric mean)
+QPS:                    15.18 Queries per second
+minQET/maxQET:          0.05328494s / 0.53827939s
+Average result count:   9.80
+min/max result count:   1 / 24
+Number of timeouts:     0
+
+Metrics for Query:      8
+Count:                  1000 times executed in whole run
+AQET:                   0.063631 seconds (arithmetic mean)
+AQET(geom.):            0.063343 seconds (geometric mean)
+QPS:                    15.72 Queries per second
+minQET/maxQET:          0.05285529s / 0.12978342s
+Average result count:   3.69
+min/max result count:   0 / 14
+Number of timeouts:     0
+
+Metrics for Query:      9
+Count:                  2000 times executed in whole run
+AQET:                   0.060622 seconds (arithmetic mean)
+AQET(geom.):            0.060300 seconds (geometric mean)
+QPS:                    16.50 Queries per second
+minQET/maxQET:          0.05163058s / 0.21506508s
+Average result (Bytes): 836.63
+min/max result (Bytes): 827 / 842
+Number of timeouts:     0
+
+Metrics for Query:      10
+Count:                  1000 times executed in whole run
+AQET:                   0.064809 seconds (arithmetic mean)
+AQET(geom.):            0.064406 seconds (geometric mean)
+QPS:                    15.43 Queries per second
+minQET/maxQET:          0.05328578s / 0.20277583s
+Average result count:   0.00
+min/max result count:   0 / 0
+Number of timeouts:     0
+
+Metrics for Query:      11
+Count:                  500 times executed in whole run
+AQET:                   0.059856 seconds (arithmetic mean)
+AQET(geom.):            0.059600 seconds (geometric mean)
+QPS:                    16.71 Queries per second
+minQET/maxQET:          0.05181843s / 0.10154248s
+Average result count:   10.00
+min/max result count:   10 / 10
+Number of timeouts:     0
+
+Metrics for Query:      12
+Count:                  500 times executed in whole run
+AQET:                   0.063032 seconds (arithmetic mean)
+AQET(geom.):            0.062789 seconds (geometric mean)
+QPS:                    15.87 Queries per second
+minQET/maxQET:          0.05446789s / 0.10715696s
+Average result (Bytes): 1418.38
+min/max result (Bytes): 1403 / 1436
+Number of timeouts:     0
+
